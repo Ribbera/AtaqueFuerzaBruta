@@ -26,7 +26,7 @@ public class Controlador {
 
 
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e);
             }
         }
         System.out.println("Todos los procesos han sido iniciados.");
