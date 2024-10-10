@@ -2,39 +2,41 @@ package practica.procesos._blank.Practica;
 
 public class Desencriptador {
 
-	/**
-	 * Genera la contraseña que corresponde a ese número de combinación. 
-	 * @param numPwd Número/posición de la combinación que se genera
-	 * @return Texto de la combinación generada
-	 */
-	public static String generaPwd(long numPwd)
-	{
-		//Este return está puesto para que compile. 
-		//Tendrás que cambiarlo
-		return null;
-	}
-	
-	/**
-	 * Genera todas las contraseñas entre los rangos indicados
-	 * Las contraseñas que se van generando deben compararse con las de la caja fuerte.
-	 * Cuando se encuentra, se da un aviso por pantalla y se para el proceso
-	 * @param inicio Inicio del rango
-	 * @param fin Fin del rango
-	 */
-	public static void ataqueFuerzaBruta(long inicio, long fin)
-	{
-		//Este es el mensaje que darás si el proceso no encuentra nada. 
-		//Si encuentras la contraseña, lo indicarás también enseñándola por pantalla.
-		System.out.println("Proceso: "+ProcessHandle.current().pid()+" completó su tarea sin encontrar nada.");
-	}
-	
-	/**
-	 * Esta clase se usará para generar contraseñas dentro del rango indicado.
-	 * El inicio y fin de esta contraseña se determina a través de args.
-	 * @param args [0], recibe el rango de inicio de la contraseña. [1], el rango de fin.
-	 */
-	public static void main(String[] args) {
-		
+	public static String generarCombinacion(long num, char[] caracteres, int longitud) {
+		StringBuilder pass = new StringBuilder();
+		int base = caracteres.length;
+
+		for (int i = 0; i < longitud; i++) {
+			int posicion = (int) (num % base);
+			pass.insert(0, caracteres[posicion]);
+			num /= base;
+		}
+
+		return pass.toString();
 	}
 
+	public static void ataqueFuerzaBruta(long inicio, long fin) {
+		for (long i = inicio; i <= fin; i++) {
+			String generatedPwd = generarCombinacion(i, Info.CHARACTERS, Info.PWD_LENGTH);
+
+			// Imprimir la combinación que se está probando
+			if (CajaFuerte.VerifyPwd(generatedPwd)) {
+				System.out.println("pass encontrada: " + generatedPwd);
+				System.exit(0); // Termina el programa si se encuentra la pass
+			}
+		}
+		System.out.println("Proceso: " + ProcessHandle.current().pid() + " completó su tarea sin encontrar nada.");
+	}
+
+	public static void main(String[] args) {
+		if (args.length < 2) {
+			System.err.println("Se requieren dos argumentos: inicio y fin.");
+			System.exit(1);
+		}
+
+		long inicio = Long.parseLong(args[0]);
+		long fin = Long.parseLong(args[1]);
+		System.out.println("Ejecutando ataque de fuerza bruta desde " + inicio + " hasta " + fin);
+		ataqueFuerzaBruta(inicio, fin);
+	}
 }
