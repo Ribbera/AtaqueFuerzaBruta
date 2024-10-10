@@ -18,14 +18,13 @@ public class Desencriptador {
 	public static void ataqueFuerzaBruta(long inicio, long fin) {
 		for (long i = inicio; i <= fin; i++) {
 			String generatedPwd = generarCombinacion(i, Info.CHARACTERS, Info.PWD_LENGTH);
-
 			// Imprimir la combinación que se está probando
 			if (CajaFuerte.VerifyPwd(generatedPwd)) {
 				System.out.println("pass encontrada: " + generatedPwd);
 				System.exit(0); // Termina el programa si se encuentra la pass
 			}
 		}
-		System.out.println("Proceso: " + ProcessHandle.current().pid() + " completó su tarea sin encontrar nada.");
+		System.out.println("Proceso: " + ProcessHandle.current().pid() + " completo su tarea sin encontrar nada.");
 	}
 
 	public static void main(String[] args) {
